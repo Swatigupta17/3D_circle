@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3D Circle Example</title>
+	<style>
+		body { 
+            margin: 0; 
+        }
+
+		
+	</style>
+</head>
+<body>
+	<label for="color-picker">Choose a color:</label>
+	<input type="color" id="color-picker">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+	<script>
+		// Create a scene
+		const scene = new THREE.Scene();
+
+		// Create a camera
+		const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		camera.position.z = 5;
+
+		// Create a renderer
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		// Create a circle
+		const geometry = new THREE.CircleGeometry( 1, 64 );
+		const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+		const circle = new THREE.Mesh( geometry, material );
+		scene.add( circle );
+
+		// Handle color picker input
+		const colorPicker = document.getElementById("color-picker");
+		colorPicker.addEventListener("input", (event) => {
+			const newColor = parseInt(event.target.value.replace("#", "0x"));
+			circle.material.color.setHex(newColor);
+		});
+
+		// Render the scene
+		function animate() {
+			requestAnimationFrame( animate );
+			circle.rotation.x += 0.01;
+			circle.rotation.y += 0.01;
+			renderer.render( scene, camera );
+		}
+		animate();
+	</script>
+</body>
+</html>
